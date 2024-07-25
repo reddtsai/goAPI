@@ -6,7 +6,7 @@ This is a api appliction developed by Golang.
 
 # Installation & Start
 
-Run with Dokcer, then you can find from http://localhost:8081.
+Run with Dokcer, then you can find API from http://localhost:8081.
 
 `make deploy`
 

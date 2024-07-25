@@ -1,6 +1,14 @@
+.PHONY: gen-mock
+gen-mock:
+	go generate ./...
+
+.PHONY: test
+test:
+	go test -v ./...
+
 .PHONY: run
 run:
-	go run main.go --port 8081
+	go run main.go --port 8082
 
 .PHONY: gen-chat-swagger
 gen-docs:
