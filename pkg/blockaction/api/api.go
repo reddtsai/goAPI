@@ -16,7 +16,10 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
+	swaggerfiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 
+	docs "github.com/reddtsai/goAPI/pkg/blockaction/api/swagger"
 	"github.com/reddtsai/goAPI/pkg/blockaction/storage"
 )
 
@@ -68,6 +71,12 @@ func init() {
 	}
 }
 
+// @title BlockAction API
+// @version 1.0
+// @description This is a BlockAction API.
+// @in header
+// @name Authorization
+// @tag.name BlockAction
 func NewBlockActionApi(opts ...BlockActionApiOption) (*BlockActionApi, error) {
 	api := new(BlockActionApi)
 	api.opts = DefaultOptions()
@@ -95,7 +104,8 @@ func NewBlockActionApi(opts ...BlockActionApiOption) (*BlockActionApi, error) {
 		prometheus.Register(_routerMetrics)
 		privateGroup.GET("/metrics", gin.WrapH(promhttp.Handler()))
 	}
-	// TODO : swagger
+	docs.SwaggerInfo.BasePath = "/v1"
+	api.Engine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 	v1Group := api.Engine.Group("/v1")
 	{
 		v1Group.Use(middleware)

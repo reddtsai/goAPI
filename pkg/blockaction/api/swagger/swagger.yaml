@@ -1,0 +1,200 @@
+definitions:
+  api.BaseResponse:
+    properties:
+      error:
+        type: string
+      result: {}
+    type: object
+  api.GetPersonalInfoResp:
+    properties:
+      account:
+        type: string
+      id:
+        type: string
+      user_name:
+        type: string
+    type: object
+  api.SigninReq:
+    properties:
+      account:
+        type: string
+      password:
+        type: string
+    required:
+    - account
+    - password
+    type: object
+  api.SigninResp:
+    properties:
+      refresh_token:
+        description: refresh token
+        type: string
+      token:
+        description: token
+        type: string
+    type: object
+  api.SignupReq:
+    properties:
+      account:
+        description: 帳號
+        maxLength: 12
+        minLength: 6
+        type: string
+      password:
+        description: 密碼
+        maxLength: 16
+        minLength: 8
+        type: string
+      user_name:
+        description: 名稱
+        maxLength: 20
+        minLength: 2
+        type: string
+    required:
+    - account
+    - password
+    - user_name
+    type: object
+  api.SignupResp:
+    properties:
+      account:
+        type: string
+    type: object
+info:
+  contact: {}
+  description: This is a BlockAction API.
+  title: BlockAction API
+  version: "1.0"
+paths:
+  /v1/signin:
+    post:
+      consumes:
+      - application/json
+      description: 會員登入
+      parameters:
+      - description: raw
+        in: body
+        name: Request
+        required: true
+        schema:
+          $ref: '#/definitions/api.SigninReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            allOf:
+            - $ref: '#/definitions/api.BaseResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/api.SigninResp'
+              type: object
+        "400":
+          description: bad request
+          schema:
+            allOf:
+            - $ref: '#/definitions/api.BaseResponse'
+            - properties:
+                error:
+                  type: string
+              type: object
+        "403":
+          description: forbidden
+          schema:
+            allOf:
+            - $ref: '#/definitions/api.BaseResponse'
+            - properties:
+                error:
+                  type: string
+              type: object
+        "500":
+          description: server error
+          schema:
+            allOf:
+            - $ref: '#/definitions/api.BaseResponse'
+            - properties:
+                error:
+                  type: string
+              type: object
+      summary: 會員登入
+      tags:
+      - BlockAction
+  /v1/signup:
+    post:
+      consumes:
+      - application/json
+      description: 會員註冊
+      parameters:
+      - description: raw
+        in: body
+        name: Request
+        required: true
+        schema:
+          $ref: '#/definitions/api.SignupReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            allOf:
+            - $ref: '#/definitions/api.BaseResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/api.SignupResp'
+              type: object
+        "400":
+          description: bad request
+          schema:
+            $ref: '#/definitions/api.BaseResponse'
+        "403":
+          description: forbidden
+          schema:
+            $ref: '#/definitions/api.BaseResponse'
+        "409":
+          description: conflict
+          schema:
+            $ref: '#/definitions/api.BaseResponse'
+        "500":
+          description: server error
+          schema:
+            $ref: '#/definitions/api.BaseResponse'
+      summary: 會員註冊
+      tags:
+      - BlockAction
+  /v1/user/personal-info:
+    get:
+      consumes:
+      - application/json
+      description: 會員資訊
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            allOf:
+            - $ref: '#/definitions/api.BaseResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/api.GetPersonalInfoResp'
+              type: object
+        "401":
+          description: unauthorized
+          schema:
+            $ref: '#/definitions/api.BaseResponse'
+        "403":
+          description: forbidden
+          schema:
+            $ref: '#/definitions/api.BaseResponse'
+        "500":
+          description: server error
+          schema:
+            $ref: '#/definitions/api.BaseResponse'
+      summary: 會員資訊
+      tags:
+      - BlockAction
+swagger: "2.0"
+tags:
+- name: BlockAction
