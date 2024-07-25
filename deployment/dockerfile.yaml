@@ -1,0 +1,11 @@
+FROM golang:1.21 AS builder
+ENV CGO_ENABLED=0 GOFLAGS=-mod=vendor
+WORKDIR /app
+COPY . .
+RUN go build -o api main.go
+
+FROM alpine:3.20
+WORKDIR /app
+COPY --from=builder /app/api /app/api
+
+ENTRYPOINT ["sh", "-c", "/app/api --port $PORT"]

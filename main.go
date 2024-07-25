@@ -4,20 +4,31 @@ import (
 	"context"
 	"log"
 
+	"github.com/spf13/viper"
+
 	"github.com/reddtsai/goAPI/cmd/http"
 	"github.com/reddtsai/goAPI/pkg/blockaction/api"
 	"github.com/reddtsai/goAPI/pkg/blockaction/storage"
 )
 
+func init() {
+	viper.SetConfigName("config")
+	viper.SetConfigType("yaml")
+	viper.AddConfigPath("conf.d")
+	err := viper.ReadInConfig()
+	if err != nil {
+		log.Fatalf("init config : %v\n", err)
+	}
+}
+
 func main() {
 	ctx := context.Background()
 
-	// TODO : config
 	db, err := storage.NewBlockActionDB(ctx, storage.BlockActionDBCfg{
-		UserName: "root",
-		Password: "!QAZ2wsx",
-		Address:  "127.0.0.1:3306",
-		DBName:   "blockaction",
+		UserName: viper.GetString("mysql-options.username"),
+		Password: viper.GetString("mysql-options.password"),
+		Address:  viper.GetString("mysql-options.addr"),
+		DBName:   viper.GetString("mysql-options.db"),
 	})
 	if err != nil {
 		log.Fatalf("init db : %v\n", err)

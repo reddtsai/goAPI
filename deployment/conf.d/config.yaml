@@ -1,0 +1,5 @@
+mysql-options:
+  addr: "mysql:3306"
+  username: "root"
+  password: "!QAZ2wsx"
+  db: "blockaction"
