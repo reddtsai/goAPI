@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  mysql:
+    image: mysql:8.1
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: '!QAZ2wsx'
+      MYSQL_DATABASE: 'blockaction'
+    ports:
+      - 3306:3306
+    
