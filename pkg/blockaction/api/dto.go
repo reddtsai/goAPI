@@ -14,6 +14,11 @@ type UserClaims struct {
 	jwt.RegisteredClaims
 }
 
+type BaseResponse struct {
+	Result interface{} `json:"result,omitempty"`
+	Error  string      `json:"error,omitempty"`
+}
+
 type SignupReq struct {
 	Account  string `json:"account" binding:"required,min=6,max=12"`   // 帳號
 	Password string `json:"password" binding:"required,min=8,max=16"`  // 密碼
